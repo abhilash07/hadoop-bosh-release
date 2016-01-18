@@ -1,0 +1,72 @@
++ case $1 in
++ mkdir -p /var/vcap/sys/run/server /var/vcap/sys/log/server /var/vcap/data/server
++ chown -R vcap:vcap /var/vcap/sys/run/server /var/vcap/sys/log/server /var/vcap/data/server
++ cp /var/vcap/jobs/server/bin/core-site.xml /var/vcap/packages/hdfs/etc/hadoop
++ cp /var/vcap/jobs/server/bin/hdfs-site.xml /var/vcap/packages/hdfs/etc/hadoop
++ cp /var/vcap/jobs/server/bin/hadoop-env.sh /var/vcap/packages/hdfs/etc/hadoop
++ echo y
++ ssh-keygen -t rsa -P '' -f /root/.ssh/id_rsa
++ cat /root/.ssh/id_rsa.pub
++ sed -ri 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
++ sed -ri 's/PermitRootLogin no/PermitRootLogin yes/g' /etc/ssh/sshd_config
++ export HADOOP_PREFIX=/var/vcap/packages/hdfs
++ HADOOP_PREFIX=/var/vcap/packages/hdfs
++ export HADOOP=/var/vcap/packages/hdfs
++ HADOOP=/var/vcap/packages/hdfs
++ source_shit
++ echo 'export JOB_NAME=server'
++ echo 'export JOB_DIR=/var/vcap/jobs/server'
++ echo 'export RUN_DIR=/var/vcap/sys/run/server'
++ echo 'export LOG_DIR=/var/vcap/sys/log/server'
++ echo 'export STDOUTLOG=/var/vcap/sys/log/server/server.stdout.log'
++ echo 'export STDERRLOG=/var/vcap/sys/log/server/server.stderr.log'
++ echo 'export PACKAGE_DIR=/var/vcap/packages'
++ echo 'export EPHEMERAL=/var/vcap/data/server'
++ echo 'export PIDFILE=/var/vcap/sys/run/server/server.pid'
++ echo 'export RUNAS=vcap'
++ echo 'export JAVA_HOME=/var/vcap/packages/jdk7'
++ echo 'export PATH=/bin:/usr/bin:/sbin:/usr/sbin:/var/vcap/packages/jdk7:/var/vcap/packages/jdk7'
++ echo 'export HADOOP_PREFIX=/var/vcap/packages/hdfs'
++ echo 'export HADOOP=/var/vcap/packages/hdfs'
+++ whoami
++ echo root
++ /var/vcap/packages/hdfs/sbin/start-dfs.sh
++ pgrep -a java
++ grep hdfs
++ awk '{print $1}'
++ case $1 in
++ mkdir -p /var/vcap/sys/run/server /var/vcap/sys/log/server /var/vcap/data/server
++ chown -R vcap:vcap /var/vcap/sys/run/server /var/vcap/sys/log/server /var/vcap/data/server
++ cp /var/vcap/jobs/server/bin/core-site.xml /var/vcap/packages/hdfs/etc/hadoop
++ cp /var/vcap/jobs/server/bin/hdfs-site.xml /var/vcap/packages/hdfs/etc/hadoop
++ cp /var/vcap/jobs/server/bin/hadoop-env.sh /var/vcap/packages/hdfs/etc/hadoop
++ echo y
++ ssh-keygen -t rsa -P '' -f /root/.ssh/id_rsa
++ cat /root/.ssh/id_rsa.pub
++ sed -ri 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
++ sed -ri 's/PermitRootLogin no/PermitRootLogin yes/g' /etc/ssh/sshd_config
++ export HADOOP_PREFIX=/var/vcap/packages/hdfs
++ HADOOP_PREFIX=/var/vcap/packages/hdfs
++ export HADOOP=/var/vcap/packages/hdfs
++ HADOOP=/var/vcap/packages/hdfs
++ source_shit
++ echo 'export JOB_NAME=server'
++ echo 'export JOB_DIR=/var/vcap/jobs/server'
++ echo 'export RUN_DIR=/var/vcap/sys/run/server'
++ echo 'export LOG_DIR=/var/vcap/sys/log/server'
++ echo 'export STDOUTLOG=/var/vcap/sys/log/server/server.stdout.log'
++ echo 'export STDERRLOG=/var/vcap/sys/log/server/server.stderr.log'
++ echo 'export PACKAGE_DIR=/var/vcap/packages'
++ echo 'export EPHEMERAL=/var/vcap/data/server'
++ echo 'export PIDFILE=/var/vcap/sys/run/server/server.pid'
++ echo 'export RUNAS=vcap'
++ echo 'export JAVA_HOME=/var/vcap/packages/jdk7'
++ echo 'export PATH=/bin:/usr/bin:/sbin:/usr/sbin:/var/vcap/packages/jdk7:/var/vcap/packages/jdk7'
++ echo 'export HADOOP_PREFIX=/var/vcap/packages/hdfs'
++ echo 'export HADOOP=/var/vcap/packages/hdfs'
+++ whoami
++ echo root
++ /var/vcap/packages/hdfs/sbin/start-dfs.sh
++ pgrep -a java
++ grep hdfs
++ awk '{print $1}'

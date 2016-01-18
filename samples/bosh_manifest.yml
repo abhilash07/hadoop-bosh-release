@@ -1,0 +1,48 @@
+---
+name: bosh_hadoop
+director_uuid: de7e613b-0f3a-47f8-8e94-cbd81af62746
+
+releases:
+- {name: hdfs, version: latest}
+
+resource_pools:
+- name: hadoop_resource_pool
+  network: hadoop_network
+  stemcell:
+    name: bosh-warden-boshlite-ubuntu-trusty-go_agent
+    version: latest
+  cloud_properties:
+    instance_type: m1.small
+    availability_zone: us-east-1c
+
+networks:
+  - name: hadoop_network
+    subnets:
+      # network with static ip used for web
+      - range: 10.244.9.0/29
+        reserved: [10.244.9.1]
+
+compilation:
+  workers: 1
+  network: hadoop_network
+  reuse_compilation_vms: true
+  cloud_properties:
+    instance_type: c1.medium
+    availability_zone: us-east-1c
+
+update:
+  canaries: 1
+  max_in_flight: 3
+  canary_watch_time: 15000-30000
+  update_watch_time: 15000-300000
+
+jobs:
+- name: hadoop
+  instances: 1
+  templates:
+  - {name: server, release: hdfs}
+  persistent_disk: 10_240
+  resource_pool: hadoop_resource_pool
+  networks:
+  - name: hadoop_network
+

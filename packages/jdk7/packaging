@@ -1,0 +1,16 @@
+# abort script on any command that exits with a non zero value
+set -e
+
+cd jdk7
+
+ARCHIVE="jdk-7u79-linux-x64.gz"
+
+if [[ -f $ARCHIVE ]] ; then
+  echo "Archive found"
+else
+  echo "Archive not found"
+  exit 1
+fi
+
+echo "Extracting archive..."
+tar xzf $ARCHIVE --strip-components 1 -C $BOSH_INSTALL_TARGET

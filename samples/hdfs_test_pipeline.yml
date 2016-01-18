@@ -1,0 +1,46 @@
+groups:
+- name: all
+  jobs:
+  - connect-to-hdfs
+
+jobs:
+- name: connect-to-hdfs
+  serial: true
+  public: true
+  plan:
+  - aggregate:
+    - get: image
+      resource: hadoop-image
+      params:
+        skip_download: true
+    - get: src
+      resource: ci-src
+      trigger: true
+  - aggregate:
+    - task: hdfs-smoke
+      config:
+        platform: linux
+        image: docker:///sequenceiq/hadoop-docker
+        inputs:
+          - name: src
+            path: .
+        run:
+          path: scripts/hdfs_smoke_test.sh
+          args: ["/usr/local/hadoop-2.7.0/bin", "10.244.8.26", "9000"]
+
+resources:
+- name: hadoop-image
+  type: docker-image
+  source:
+    repository: sequenceiq/hadoop-docker
+    tag: latest
+    cache: true
+- name: ci-src
+  type: git
+  source:
+    uri: {{source_uri}}
+    branch: {{primary-branch}}
+    private_key: {{private-repo-key}}
+    paths:
+      - scripts/hdfs_smoke_test.sh
+

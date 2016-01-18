@@ -1,0 +1,88 @@
+#!/bin/bash
+
+set -eux -o pipefail
+
+_main() {
+  JOB_NAME=server
+  JOB_DIR=/var/vcap/jobs/$JOB_NAME
+  RUN_DIR=/var/vcap/sys/run/$JOB_NAME
+  LOG_DIR=/var/vcap/sys/log/$JOB_NAME
+  STDOUTLOG=$LOG_DIR/server.stdout.log
+  STDERRLOG=$LOG_DIR/server.stderr.log
+  PACKAGE_DIR=/var/vcap/packages
+  EPHEMERAL=/var/vcap/data/$JOB_NAME
+  PIDFILE=$RUN_DIR/$JOB_NAME.pid
+  RUNAS=vcap
+  
+  export JAVA_HOME=$PACKAGE_DIR/jdk7
+  export PATH=$PATH:$JAVA_HOME
+  
+  exec > >(tee -a $STDOUTLOG)
+  exec 2> >(tee -a $STDERRLOG)
+  
+  case $1 in
+  
+    start)
+      mkdir -p $RUN_DIR $LOG_DIR $EPHEMERAL
+      chown -R $RUNAS:$RUNAS $RUN_DIR $LOG_DIR $EPHEMERAL
+  
+      cp $JOB_DIR/bin/core-site.xml $PACKAGE_DIR/hdfs/etc/hadoop
+      cp $JOB_DIR/bin/hdfs-site.xml $PACKAGE_DIR/hdfs/etc/hadoop
+      cp $JOB_DIR/bin/hadoop-env.sh $PACKAGE_DIR/hdfs/etc/hadoop
+  
+      echo y | ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
+      cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+      sed -ri 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config # See https://gist.github.com/gasi/5691565
+      sed -ri 's/PermitRootLogin no/PermitRootLogin yes/g' /etc/ssh/sshd_config # See https://gist.github.com/gasi/5691565
+      echo "StrictHostKeyChecking no" > ~/.ssh/config
+      service ssh reload
+
+      export HADOOP_PREFIX=$PACKAGE_DIR/hdfs
+      export HADOOP=$HADOOP_PREFIX
+      
+      source_shit
+  
+      echo $(whoami)
+
+      $PACKAGE_DIR/hdfs/bin/hdfs namenode -format
+      $PACKAGE_DIR/hdfs/sbin/start-dfs.sh
+  
+  
+      pgrep -a java | grep hdfs | awk '{print $1}' >$PIDFILE
+      ;;
+  
+    stop)
+      PID=$(head -1 $PIDFILE)
+      if [ ! -z "$PID" ] && pid_exists "$PID"; then
+        $PACKAGE_DIR/hdfs/sbin/stop-dfs.sh
+      fi
+      while [ -e "/proc/$PID" ]; do sleep 0.1; done
+      
+      rm -f $PIDFILE
+      ;;
+  
+    *)
+      echo "Usage: ${JOB_NAME}_ctl {start|stop}" ;;
+  esac
+}
+
+source_shit() {
+  echo "export JOB_NAME=server" >> /root/.profile
+  echo "export JOB_DIR=/var/vcap/jobs/$JOB_NAME" >> /root/.profile
+  echo "export RUN_DIR=/var/vcap/sys/run/$JOB_NAME" >> /root/.profile
+  echo "export LOG_DIR=/var/vcap/sys/log/$JOB_NAME" >> /root/.profile
+  echo "export STDOUTLOG=$LOG_DIR/server.stdout.log" >> /root/.profile
+  echo "export STDERRLOG=$LOG_DIR/server.stderr.log" >> /root/.profile
+  echo "export PACKAGE_DIR=/var/vcap/packages" >> /root/.profile
+  echo "export EPHEMERAL=/var/vcap/data/$JOB_NAME" >> /root/.profile
+  echo "export PIDFILE=$RUN_DIR/$JOB_NAME.pid" >> /root/.profile
+  echo "export RUNAS=vcap" >> /root/.profile
+
+  echo "export JAVA_HOME=$PACKAGE_DIR/jdk7" >> /root/.profile
+  echo "export PATH=$PATH:$JAVA_HOME" >> /root/.profile
+
+  echo "export HADOOP_PREFIX=$PACKAGE_DIR/hdfs" >> /root/.profile
+  echo "export HADOOP=$HADOOP_PREFIX" >> /root/.profile
+}
+
+_main "$@"

@@ -1,0 +1,11 @@
+---
+name: server
+templates:
+  server_ctl: bin/server_ctl
+  core-site.xml: bin/core-site.xml
+  hdfs-site.xml: bin/hdfs-site.xml
+  hadoop-env.sh: bin/hadoop-env.sh
+
+packages:
+  - hdfs
+  - jdk7

@@ -1,0 +1,8 @@
+---
+name: hdfs
+
+dependencies:
+- jdk7
+
+files:
+- hdfs/hadoop-2.6.3.tar.gz #http://www.apache.org/dyn/closer.cgi/hadoop/common/hadoop-2.6.3/hadoop-2.6.3.tar.gz
