@@ -1,7 +1,7 @@
 # abort script on any command that exits with a non zero value
 set -eux -o pipefail
 
-PACKAGE_FILE=hadoop-2.6.3.tar.gz
+PACKAGE_FILE=hadoop-2.7.1.tar.gz
 
 tar -xvf hdfs/$PACKAGE_FILE -C $BOSH_INSTALL_TARGET/ --strip-components 1
 chown -R vcap:vcap $BOSH_INSTALL_TARGET

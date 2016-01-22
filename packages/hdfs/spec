@@ -5,4 +5,4 @@ dependencies:
 - jdk7
 
 files:
-- hdfs/hadoop-2.6.3.tar.gz #http://www.apache.org/dyn/closer.cgi/hadoop/common/hadoop-2.6.3/hadoop-2.6.3.tar.gz
+- hdfs/hadoop-2.7.1.tar.gz #http://www.apache.org/dist/hadoop/common/hadoop-2.7.1/hadoop-2.7.1.tar.gz
