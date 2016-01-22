@@ -9,4 +9,12 @@
       <name>dfs.permissions</name>
       <value>false</value>
     </property>
+    <property>
+      <name>dfs.namenode.fs-limits.min-block-size</name>
+      <value>1024</value>
+    </property>
+    <property>
+      <name>dfs.datanode.data.dir</name>
+      <value>/var/vcap/store</value>
+    </property>
 </configuration>
