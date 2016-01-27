@@ -1,1 +1,9 @@
---- {}
+---
+hdfs/hadoop-2.7.1.tar.gz:
+  object_id: 843bc290-dc9a-4c7e-8adc-ec07534ad424
+  sha: 8aa2e1e8dbe0efeb2e98ac24c0eae37c5f94764c
+  size: 210606807
+jdk7/jdk-7u79-linux-x64.gz:
+  object_id: 3db14ef5-1c4c-4b81-9123-3e68b157281e
+  sha: c4deb058f674ab732b36a101147add089cf7f134
+  size: 153512879
