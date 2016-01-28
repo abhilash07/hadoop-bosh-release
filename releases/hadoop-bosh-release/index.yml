@@ -2,4 +2,6 @@
 builds:
   539595ca-c6cf-49ca-a708-35150fdb708a:
     version: 0.1.0
+  74d15746-7a7f-498b-8de0-ae9d4fe5e9b2:
+    version: 0.2.0
 format-version: '2'
