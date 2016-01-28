@@ -14,7 +14,7 @@
       <value>1024</value>
     </property>
     <property>
-      <name>dfs.datanode.data.dir</name>
-      <value>/var/vcap/store</value>
+      <name>dfs.data.dir</name>
+      <value>/var/vcap/store/server</value>
     </property>
 </configuration>

@@ -11,6 +11,7 @@ _main() {
   STDERRLOG=$LOG_DIR/server.stderr.log
   PACKAGE_DIR=/var/vcap/packages
   EPHEMERAL=/var/vcap/data/$JOB_NAME
+  PERSISTENT=/var/vcap/store/$JOB_NAME
   PIDFILE=$RUN_DIR/$JOB_NAME.pid
   RUNAS=vcap
   
@@ -44,9 +45,10 @@ _main() {
   
       echo $(whoami)
 
+      rm -rf $PERSISTENT
       $PACKAGE_DIR/hdfs/bin/hdfs namenode -format
+
       $PACKAGE_DIR/hdfs/sbin/start-dfs.sh
-  
   
       pgrep -a java | grep hdfs | awk '{print $1}' >$PIDFILE
       ;;
@@ -64,6 +66,10 @@ _main() {
     *)
       echo "Usage: ${JOB_NAME}_ctl {start|stop}" ;;
   esac
+}
+
+function pid_exists() {
+  ps -p $1 &> /dev/null
 }
 
 source_shit() {
