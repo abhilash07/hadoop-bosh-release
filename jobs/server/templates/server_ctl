@@ -46,7 +46,7 @@ _main() {
       echo $(whoami)
 
       rm -rf $PERSISTENT
-      $PACKAGE_DIR/hdfs/bin/hdfs namenode -format
+      $PACKAGE_DIR/hdfs/bin/hdfs namenode -format -force
 
       $PACKAGE_DIR/hdfs/sbin/start-dfs.sh
   
