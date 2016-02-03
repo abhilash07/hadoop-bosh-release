@@ -54,12 +54,13 @@ _main() {
       ;;
   
     stop)
-      PID=$(head -1 $PIDFILE)
-      if [ ! -z "$PID" ] && pid_exists "$PID"; then
-        $PACKAGE_DIR/hdfs/sbin/stop-dfs.sh
-      fi
-      while [ -e "/proc/$PID" ]; do sleep 0.1; done
       
+      $PACKAGE_DIR/hdfs/sbin/stop-dfs.sh
+
+      for PID in $(cat $PIDFILE); do
+        while [ -e "/proc/$PID" ]; do sleep 0.1; done
+      done
+
       rm -f $PIDFILE
       ;;
   
