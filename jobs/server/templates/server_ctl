@@ -41,7 +41,7 @@ _main() {
       export HADOOP_PREFIX=$PACKAGE_DIR/hdfs
       export HADOOP=$HADOOP_PREFIX
       
-      source_shit
+      source_vars
   
       echo $(whoami)
 
@@ -72,7 +72,7 @@ function pid_exists() {
   ps -p $1 &> /dev/null
 }
 
-source_shit() {
+source_vars() {
   echo "export JOB_NAME=server" >> /root/.profile
   echo "export JOB_DIR=/var/vcap/jobs/$JOB_NAME" >> /root/.profile
   echo "export RUN_DIR=/var/vcap/sys/run/$JOB_NAME" >> /root/.profile
