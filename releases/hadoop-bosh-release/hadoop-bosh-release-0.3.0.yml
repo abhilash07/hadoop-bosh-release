@@ -1,0 +1,22 @@
+---
+packages:
+- name: hdfs
+  version: eee9ca79153d6af4bbdceff0e9668dc0101ab358
+  fingerprint: eee9ca79153d6af4bbdceff0e9668dc0101ab358
+  sha1: 7cede7ab99b4de0c57c79d2b212ad84e98a56fb5
+  dependencies:
+  - jdk7
+- name: jdk7
+  version: 10a7420e37fa9acfc4a4e3716b32f0ad0401ca0a
+  fingerprint: 10a7420e37fa9acfc4a4e3716b32f0ad0401ca0a
+  sha1: c5f694318206aff306317ce49db1d613a369bee8
+  dependencies: []
+jobs:
+- name: server
+  version: 71234c9ba6dde9de337c04e0690510bb102b6fca
+  fingerprint: 71234c9ba6dde9de337c04e0690510bb102b6fca
+  sha1: 21b91228f820933808a4520ae0c8e7404f903abe
+commit_hash: 5cd80f43
+uncommitted_changes: false
+name: hadoop-bosh-release
+version: 0.3.0
