@@ -11,7 +11,7 @@ _main() {
   STDERRLOG=$LOG_DIR/server.stderr.log
   PACKAGE_DIR=/var/vcap/packages
   EPHEMERAL=/var/vcap/data/$JOB_NAME
-  PERSISTENT=/var/vcap/store/$JOB_NAME
+  DATA_DIR=/var/vcap/store/datanode
   PIDFILE=$RUN_DIR/$JOB_NAME.pid
   RUNAS=vcap
   
@@ -45,7 +45,7 @@ _main() {
   
       echo $(whoami)
 
-      rm -rf $PERSISTENT
+      rm -rf $DATA_DIR
       $PACKAGE_DIR/hdfs/bin/hdfs namenode -format -force
 
       $PACKAGE_DIR/hdfs/sbin/start-dfs.sh
